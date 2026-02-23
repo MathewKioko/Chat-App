@@ -60,6 +60,8 @@ const ChatApp = () => {
     }
 
     useEffect(() => {
+        if (!supabase) return
+        
         supabase.auth.getSession().then(({ data: { session } }) => {
             setSession(session)
         })
@@ -73,6 +75,12 @@ const ChatApp = () => {
 
     const signIn = async () => {
         setAuthError('')
+        
+        if (!supabase) {
+            setAuthError('Supabase not configured. Please add environment variables.')
+            return
+        }
+        
         if (!email || !password) {
             setAuthError('Please enter both email and password')
             return
