@@ -73,6 +73,10 @@ const ChatApp = () => {
 
     const signIn = async () => {
         setAuthError('')
+        if (!email || !password) {
+            setAuthError('Please enter both email and password')
+            return
+        }
         try {
             if (isSignUp) {
                 const { error } = await supabase.auth.signUp({
@@ -94,7 +98,8 @@ const ChatApp = () => {
                 if (error) throw error
             }
         } catch (error) {
-            setAuthError(error.message)
+            console.error('Auth error:', error)
+            setAuthError(error.message || 'Authentication failed. Please check if Email auth is enabled in Supabase.')
         }
     }
 
